@@ -1,12 +1,12 @@
-# SMASH CAU
+# SMASH CBNU
 
-![SMASH CAU 화면](site/og.png)
+![SMASH CBNU 화면](site/og.png)
 
-중앙대학교 서울캠퍼스를 3D로 부수는 브라우저 게임입니다. 시험 기간 스트레스 해소용입니다.
+충북대학교 개신캠퍼스를 3D로 부수는 브라우저 게임입니다. 시험 기간 스트레스 해소용입니다.
 
 학교와 관계없는 비공식 팬 게임입니다.
 
-**바로 하기:** https://hong-iron.github.io/SMASH-CAU/
+**바로 하기:** https://hong-iron.github.io/SMASH-CBNU/
 
 ## 하는 법
 
@@ -46,23 +46,21 @@
 
 ## 데이터와 출처
 
-- 건물 모양과 층수, 도로, 녹지: © OpenStreetMap 기여자 (ODbL). `data/campus.json`도 ODbL을 따릅니다.
+- 캠퍼스 경계, 건물 모양과 층수, 도로, 녹지: © OpenStreetMap 기여자 (ODbL). `data/campus.json`도 ODbL을 따릅니다.
 - 땅 높이: AWS Terrain Tiles (Mapzen terrarium 형식, SRTM 30 m 기반).
-- 100주년기념관 층수(지상 12층, 지하 6층): 대학저널 2016년 준공 보도.
-- OpenStreetMap에 층수가 없는 건물 6동은 4층으로 어림했습니다.
+- OpenStreetMap의 건물 157동 가운데 층수가 적힌 건물은 85동이라, 나머지는 4층으로 어림했습니다.
 - 건물 겉모습(창문, 벽돌, 유리)은 실제 사진이 아니라 코드로 그린 일반 재질입니다.
 
 ## 만든 방법
 
-- 같은 방식으로 만든 다른 학교: [SMASH SSU](https://github.com/Hong-Iron/SMASH-SSU), [SMASH SNU](https://github.com/Hong-Iron/SMASH-SNU)
+- 같은 방식으로 만든 다른 학교는 [SMASH 대학교](https://hong-iron.github.io/SMASH/)에서 볼 수 있습니다.
 - 3D는 three.js r160(CDN), 소리는 Web Audio로 합성합니다. 소리 파일은 없습니다.
-- 학교 이름, 주소, 미리보기 문구, 건물별 재질 지정은 `config.json`에 있습니다.
+- 학교 이름, 주소, 미리보기 문구는 `config.json`에 있습니다.
 - 랭킹 서버 주소와 공개 키(`supabaseUrl`, `supabaseKey`), 방문 통계 주소(`goatcounter`)도 `config.json`에 있습니다. 랭킹 서버의 표와 함수는 [SMASH 저장소의 `supabase/`](https://github.com/Hong-Iron/SMASH/tree/main/supabase)에 있습니다.
 - 페이지 만들기: `src/app.html` + `data/campus.json` + `config.json` → `python3 tools/assemble.py` → `site/index.html`
 - 데이터 다시 만들기 (numpy, matplotlib 필요):
-  1. `python3 tools/fetch.py way 284355223 raw`
+  1. `python3 tools/fetch.py relation 6705106 raw`
   2. `python3 tools/build_campus.py raw raw/campus_raw.json`
   3. `python3 tools/add_trees.py raw/campus_raw.json data/campus.json`
   4. `python3 tools/fix_terrain.py data/campus.json` — 땅 높이 정리: 높이 자료의 빈칸(음수 값)을 메우고, 높은 건물이 언덕처럼 찍힌 자국을 지우고, 호수와 연못을 평평한 수면으로 맞춥니다.
-  - 100주년기념관 층수(지상 12층)는 OpenStreetMap에 없어서 지금 `data/campus.json`에만 들어 있습니다. 데이터를 다시 만들면 직접 넣어야 합니다.
 - `main`에 push하면 GitHub Actions가 `site/` 폴더를 GitHub Pages에 올립니다.
